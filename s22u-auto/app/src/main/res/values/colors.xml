@@ -11,4 +11,6 @@
     <color name="error">#FF5252</color>
     <color name="warning">#FFB300</color>
     <color name="success">#4CAF50</color>
+    <color name="successColor">#4CAF50</color>
+    <color name="errorColor">#FF5252</color>
 </resources>
