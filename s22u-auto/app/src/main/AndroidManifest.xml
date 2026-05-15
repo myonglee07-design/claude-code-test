@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 위치/지오펜스 (§spec §2) -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+    <!-- 부팅 후 룰 재등록 (§115) -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- 정확 알람 (Android 12+) -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+
+    <!-- 알림 (Android 13+) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.S22uAuto">
+
+        <!--
+          컴포넌트는 spec §10 순서대로 추가:
+          - MainActivity (LAUNCHER) : 11단계
+          - RuleEditActivity        : 12단계
+          - SettingsActivity        : 13단계
+          - AlarmReceiver           : 7단계
+          - GeofenceReceiver        : 8단계
+          - BootReceiver            : 9단계
+          (현재 2단계: Gradle 동기화 가능, APK 빌드는 LAUNCHER 추가 후)
+        -->
+
+    </application>
+
+</manifest>

@@ -1,0 +1,19 @@
+# §9 서명키 보안 - 절대 커밋 금지
+keystore.properties
+*.jks
+*.keystore
+local.properties
+
+# 빌드 산출물
+.gradle/
+build/
+app/build/
+app/release/
+.kotlin/
+
+# IDE
+.idea/
+*.iml
+.DS_Store
+
+# Room 스키마는 커밋 (회귀 검증용) → schemas/ 는 무시 안 함

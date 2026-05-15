@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- §116 E 색상 표준 -->
+    <color name="primary">#0066FF</color>
+    <color name="primary_dark">#003D99</color>
+    <color name="accent">#00B4FF</color>
+    <color name="app_bg">#0A0E1A</color>
+    <color name="surface">#1A2238</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B0BEC5</color>
+    <color name="error">#FF5252</color>
+    <color name="warning">#FFB300</color>
+    <color name="success">#4CAF50</color>
+</resources>

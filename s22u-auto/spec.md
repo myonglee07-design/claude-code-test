@@ -1,6 +1,6 @@
 # s22u-auto 설계 명세 (spec)
 
-[버전] spec v0.2 (2026-05-15, 방향 전면 변경 후 재작성, 명세 합의 대기)
+[버전] spec v0.3 (2026-05-15, R1~R6 확정 — 명세 OK, 구현 착수)
 [앱] "자동화" — 범용 안드로이드 자동화 앱 (MacroDroid 미사용 자체완결, 좀비폰 §3-A~3-D 원칙)
 [트랙] 네이티브 Kotlin (지침서 Part 7~8 / §107~§120)
 [작업 모드] 정밀 모드 (§56)
@@ -48,9 +48,11 @@ v0.1.0 = 최소 동작 버전. Rule:Trigger:Action = 1:1:1 (체인/AND·OR 없�
 - GEOFENCE: lat, lng, 반경 m(기본 150), transition(ENTER / EXIT — 추천 기본 ENTER, 선택형)
 
 ### Action
-- WIFI_TOGGLE: 모드(ON / OFF / TOGGLE — 추천 파라미터화)
-- RUN_SU: 명령 텍스트 1줄 (v0.1.0은 단일 명령 = SuRunner.runOneShot. 멀티는 차기 §114)
-- SHOW_NOTIFICATION: 제목, 본문
+- WIFI: 모드(ON / OFF). **TOGGLE 제외(R3, 본업 안전 §87)** — 트리거 시점
+  폰 상태 변동 시 의도 반대 동작 위험(콜 끊김 방지). v0.2.0+ 재검토.
+- RUN_SU: 단일 명령(긴 문자열 OK, `&&` 연결 허용). 멀티라인 입력 필드,
+  1줄 강제 변환 X. v0.1.0 SuRunner.runOneShot.
+- NOTIFY: 제목, 본문
 
 ### 권한
 `ACCESS_FINE_LOCATION`, `ACCESS_BACKGROUND_LOCATION`(10+),
@@ -158,7 +160,21 @@ com.myong.auto
 
 DB(D6): RuleEntity(id,name,enabled,createdAt) + TriggerEntity(ruleId FK,
 type,paramsJson) + ActionEntity(ruleId FK,type,paramsJson). 1:1:1.
-파라미터는 JSON 문자열 컬럼(v0.1.0 유연성, 추천) — 타입드 컬럼은 차기.
+파라미터 = JSON TEXT 컬럼. 직렬화 = kotlinx.serialization.
+DB↔domain 변환은 Repository에서.
+
+domain sealed class (R5 확정):
+```
+TriggerParams.Time(hour, minute, repeat: Daily | Once(dateTimeMillis))
+TriggerParams.Geofence(lat, lon, radiusM, transition: Enter|Exit|Both)  // 기본 Enter
+ActionParams.Wifi(state: On | Off)        // TOGGLE 없음
+ActionParams.RunSu(command: String)
+ActionParams.Notify(title, message)
+```
+
+알림 정책 (R6 확정): 성공·실패 모두 IMPORTANCE_LOW(무음, 본업 중
+소리/진동 금지 우선). 성패는 아이콘/이모지(✅/⚠️)로 구분. 전역 토글
+1개 "실행 결과 알림 표시"(SettingsActivity). 룰 단위 토글 v0.2.0+.
 
 ---
 
@@ -182,15 +198,15 @@ type,paramsJson) + ActionEntity(ruleId FK,type,paramsJson). 1:1:1.
 
 ---
 
-## 11. 잔여 결정 (명세 확정 시 답, §80-A 룰2 추천 포함)
+## 11. 결정 확정 (R1~R6, 명세 OK)
 
-| # | 항목 | 추천 | 이유 |
-|---|---|---|---|
-| R1 | TIME 반복 | 매일 + 1회 옵션(param) | 단순+유연 |
-| R2 | GEOFENCE transition | 선택형, 기본 ENTER | 본업 안전(나갈 때 동작은 사용자 선택) |
-| R3 | WIFI 모드 | ON/OFF/TOGGLE param | 범용 앱이므로 끄기도 필요 |
-| R4 | RUN_SU | v0.1.0 단일 명령 | runOneShot. 멀티는 §114 차기 |
-| R5 | 파라미터 저장 | JSON 문자열 컬럼 | v0.1.0 유연. 타입드는 차기 |
-| R6 | 결과 알림 | 기본 ON(무음) | 자동 실행 가시성 |
+| # | 확정 |
+|---|---|
+| R1 | TIME 반복 = 매일반복 / 1회만(특정 일시) 2모드, UI 선택 |
+| R2 | GEOFENCE = ENTER/EXIT/둘다 선택형, 기본 ENTER |
+| R3 | WIFI = ON/OFF 2개만. TOGGLE 제외(§87 본업 안전). v0.2.0+ 재검토 |
+| R4 | RUN_SU = 단일 명령(긴 문자열·`&&` OK), 멀티라인 입력, 강제변환 X |
+| R5 | 파라미터 = JSON TEXT + kotlinx.serialization, domain sealed class(§9) |
+| R6 | 결과 알림 = 성공·실패 모두 무음(IMPORTANCE_LOW), ✅/⚠️ 구분, 전역토글1 |
 
-D1~D8은 확정 접수됨(상단 §0 반영).
+D1~D8 + R1~R6 전부 확정. 본 명세로 구현 진행(§10 순서).
