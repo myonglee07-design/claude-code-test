@@ -51,6 +51,7 @@ android {
 
     // §108 주의4 - Java/Kotlin jvmTarget 11 통일 (불일치 시 빌드 거부)
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -83,6 +84,7 @@ dependencies {
     implementation(libs.play.services.location)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

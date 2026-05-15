@@ -10,6 +10,9 @@ class RuleRepository(private val dao: RuleDao) {
     fun observeRules(): Flow<List<Rule>> =
         dao.observeRules().map { list -> list.mapNotNull { it.toDomain() } }
 
+    suspend fun getRule(id: Long): Rule? =
+        dao.getRule(id)?.toDomain()
+
     suspend fun insertRule(rule: Rule): Long =
         dao.insertFullRule(
             rule.toRuleEntity(),
