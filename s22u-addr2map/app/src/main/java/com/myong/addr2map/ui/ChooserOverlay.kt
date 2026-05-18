@@ -88,21 +88,31 @@ object ChooserOverlay {
             orientation = LinearLayout.HORIZONTAL
             setPadding(0, dp(16), 0, 0)
         }
-        fun mapBtn(label: String, color: String, t: MapLauncher.Target) =
+        fun mapBtn(t: MapLauncher.Target) =
             Button(context).apply {
-                text = label
+                val isTmap = t == MapLauncher.Target.TMAP
+                text = if (isTmap) "티맵" else "카카오"
                 setTextColor(Color.parseColor("#0A0E1A"))
-                setBackgroundColor(Color.parseColor(color))
+                setBackgroundColor(Color.parseColor(if (isTmap) "#1FAF6B" else "#FEE500"))
                 setOnClickListener {
                     remove()
                     MapLauncher.open(context, t, address)
                 }
             }
-        row.addView(mapBtn("티맵", "#1FAF6B", MapLauncher.Target.TMAP),
+        val default = com.myong.addr2map.core.PrefsStore.defaultTarget(context)
+        val order = if (default == MapLauncher.Target.KAKAO)
+            listOf(MapLauncher.Target.KAKAO, MapLauncher.Target.TMAP)
+        else
+            listOf(MapLauncher.Target.TMAP, MapLauncher.Target.KAKAO)
+        row.addView(
+            mapBtn(order[0]),
             LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-                .apply { marginEnd = dp(8) })
-        row.addView(mapBtn("카카오", "#FEE500", MapLauncher.Target.KAKAO),
-            LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
+                .apply { marginEnd = dp(8) }
+        )
+        row.addView(
+            mapBtn(order[1]),
+            LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+        )
         card.addView(row)
         card.addView(Button(context).apply {
             text = "닫기"

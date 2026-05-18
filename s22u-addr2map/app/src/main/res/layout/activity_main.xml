@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="주소→맵"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:lineSpacingExtra="4dp"
+            android:textColor="#B0BEC5"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btnAccess"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="접근성 설정 열기" />
+
+        <Button
+            android:id="@+id/btnAccessRoot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="루트로 접근성 자동 켜기" />
+
+        <Button
+            android:id="@+id/btnOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="오버레이 권한 열기" />
+
+        <Button
+            android:id="@+id/btnOverlayRoot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="루트로 오버레이 자동 허용" />
+
+        <Button
+            android:id="@+id/btnNoti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="알림 권한 요청" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="기본 맵 (팝업 왼쪽 우선)"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" />
+
+        <RadioGroup
+            android:id="@+id/rgDefault"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbTmap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="티맵"
+                android:textColor="#FFFFFF" />
+
+            <RadioButton
+                android:id="@+id/rbKakao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:text="카카오"
+                android:textColor="#FFFFFF" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btnTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="샘플 주소로 팝업 테스트" />
+
+    </LinearLayout>
+</ScrollView>

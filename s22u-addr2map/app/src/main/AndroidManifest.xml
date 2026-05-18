@@ -54,10 +54,14 @@
                 android:resource="@xml/accessibility_service_config" />
         </service>
 
-        <!--
-          남은 컴포넌트 (spec §10):
-          - MainActivity (LAUNCHER)    : 9단계 (집, UI/실기기 검증)
-        -->
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
     </application>
 
