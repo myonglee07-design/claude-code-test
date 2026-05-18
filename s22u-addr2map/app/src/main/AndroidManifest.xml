@@ -25,12 +25,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Addr2Map">
 
+        <receiver
+            android:name=".ui.MapActionReceiver"
+            android:exported="false" />
+
         <!--
-          컴포넌트는 spec §10 순서대로 추가:
+          남은 컴포넌트 (spec §10):
           - ProcessTextActivity        : 7단계
           - AddrAccessibilityService   : 8단계
           - MainActivity (LAUNCHER)    : 9단계 (집)
-          - MapActionReceiver          : 6단계 (알림 폴백)
         -->
 
     </application>
