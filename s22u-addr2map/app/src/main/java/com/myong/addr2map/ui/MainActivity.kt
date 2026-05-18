@@ -81,9 +81,27 @@ class MainActivity : AppCompatActivity() {
             PrefsStore.setDefaultTarget(this, t)
         }
 
+        b.btnPaste.setOnClickListener {
+            val cb = getSystemService(android.content.ClipboardManager::class.java)
+            val t = cb?.primaryClip?.takeIf { it.itemCount > 0 }
+                ?.getItemAt(0)?.coerceToText(this)?.toString()?.trim().orEmpty()
+            if (t.isEmpty()) toast("클립보드가 비어 있음") else b.etAddress.setText(t)
+        }
+        b.btnGoTmap.setOnClickListener { goMap(MapLauncher.Target.TMAP) }
+        b.btnGoKakao.setOnClickListener { goMap(MapLauncher.Target.KAKAO) }
+
         b.btnTest.setOnClickListener {
             ChooserOverlay.show(this, "서울특별시 강남구 테헤란로 123")
         }
+    }
+
+    private fun goMap(target: MapLauncher.Target) {
+        val addr = b.etAddress.text?.toString()?.trim().orEmpty()
+        if (addr.isEmpty()) {
+            toast("주소를 입력하거나 붙여넣으세요")
+            return
+        }
+        MapLauncher.open(this, target, addr)
     }
 
     override fun onResume() {
