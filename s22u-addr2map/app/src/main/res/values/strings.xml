@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">주소→맵</string>
+    <string name="a11y_desc">주소를 복사하면 티맵/카카오맵으로 바로 열 수 있게 클립보드 변경을 감지합니다.</string>
 </resources>

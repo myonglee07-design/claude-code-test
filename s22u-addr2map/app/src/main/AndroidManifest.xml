@@ -42,10 +42,21 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name=".service.AddrAccessibilityService"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
+
         <!--
           남은 컴포넌트 (spec §10):
-          - AddrAccessibilityService   : 8단계
-          - MainActivity (LAUNCHER)    : 9단계 (집)
+          - MainActivity (LAUNCHER)    : 9단계 (집, UI/실기기 검증)
         -->
 
     </application>
