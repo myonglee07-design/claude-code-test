@@ -5,82 +5,160 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>주소→맵 · 미리보기</title>
 <style>
-:root{--bg:#0A0E1A;--surface:#1A2238;--text:#fff;--muted:#B0BEC5;--primary:#0066FF;--tmap:#1FAF6B;--kakao:#FEE500}
-*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A0E1A;--surface:#1A2238;--surface2:#222C45;--line:#2C3654;
+  --text:#FFFFFF;--muted:#9AA7BD;--primary:#0066FF;--primary2:#1E7BFF;
+  --tmap:#1FAF6B;--kakao:#FEE500;--ok:#4CAF50;--no:#FF5252;--warn:#FFB300;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{color-scheme:dark}
-body{background:var(--bg);color:var(--text);font-family:-apple-system,"Segoe UI",Roboto,"Noto Sans KR",sans-serif;-webkit-text-size-adjust:100%}
-.banner{background:#FFB300;color:#000;text-align:center;font-size:12px;font-weight:700;padding:6px 8px}
-.wrap{max-width:420px;margin:0 auto;padding:20px}
-h1{font-size:22px}
-.cap{margin:18px 0 4px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:1px}
-.status{background:var(--surface);border-radius:12px;padding:14px 16px;margin-top:16px;color:var(--muted);font-size:14px;line-height:1.9}
-.ok{color:#4CAF50}.no{color:#FF5252}
-.btn{display:block;width:100%;margin-top:12px;padding:13px;border:none;border-radius:8px;background:var(--surface);color:var(--text);font-size:15px;text-align:center;text-decoration:none}
-.btn.sub{margin-top:4px;background:#232c45;color:var(--muted)}
-.section{margin-top:24px;font-size:16px;font-weight:700}
-.row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #232c45;font-size:15px}
-.sw{width:46px;height:26px;border-radius:13px;background:#394560;position:relative;flex:none}
+body{background:var(--bg);color:var(--text);
+ font-family:-apple-system,"Segoe UI",Roboto,"Noto Sans KR",sans-serif;
+ -webkit-text-size-adjust:100%;padding-bottom:32px}
+.banner{background:var(--warn);color:#000;text-align:center;
+ font-size:12px;font-weight:700;padding:7px 8px;letter-spacing:.3px}
+.wrap{max-width:430px;margin:0 auto;padding:18px 16px}
+
+/* header */
+.hdr{display:flex;align-items:center;gap:12px;margin:6px 2px 18px}
+.logo{width:44px;height:44px;border-radius:13px;
+ background:linear-gradient(135deg,var(--primary),var(--primary2));
+ display:flex;align-items:center;justify-content:center;font-size:22px}
+.hdr h1{font-size:21px;line-height:1.2}
+.hdr p{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* card */
+.card{background:var(--surface);border-radius:16px;padding:18px 18px;
+ margin-top:14px;box-shadow:0 2px 10px rgba(0,0,0,.28)}
+.card>.t{font-size:13px;font-weight:700;color:var(--muted);
+ letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
+
+/* status rows */
+.srow{display:flex;align-items:center;gap:10px;padding:9px 0;
+ font-size:14.5px;border-bottom:1px solid var(--line)}
+.srow:last-child{border-bottom:0;padding-bottom:0}
+.srow:first-of-type{padding-top:0}
+.dot{width:9px;height:9px;border-radius:50%;flex:none}
+.dot.g{background:var(--ok);box-shadow:0 0 7px var(--ok)}
+.dot.r{background:var(--no);box-shadow:0 0 7px var(--no)}
+.srow .v{margin-left:auto;font-size:12.5px;color:var(--muted)}
+
+/* buttons */
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;
+ width:100%;margin-top:10px;padding:13px;border:none;border-radius:12px;
+ background:var(--surface2);color:var(--text);font-size:15px;font-weight:600}
+.btn:first-of-type{margin-top:0}
+.btn .ic{font-size:16px}
+.btn.root{background:transparent;border:1px solid var(--line);
+ color:var(--muted);font-weight:500;font-size:13.5px;padding:11px}
+.btn.primary{background:linear-gradient(135deg,var(--primary),var(--primary2));
+ color:#fff;font-weight:700;font-size:16px;padding:15px;
+ box-shadow:0 4px 14px rgba(0,102,255,.4)}
+
+/* option rows */
+.orow{display:flex;align-items:center;justify-content:space-between;
+ padding:13px 0;border-bottom:1px solid var(--line)}
+.orow:last-of-type{border-bottom:0}
+.orow .lab{font-size:15px}
+.orow .sub{font-size:12px;color:var(--muted);margin-top:3px}
+.sw{width:48px;height:28px;border-radius:14px;background:#3A4566;
+ position:relative;flex:none;transition:background .15s}
 .sw.on{background:var(--primary)}
-.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;
+ height:22px;border-radius:50%;background:#fff;transition:left .15s}
 .sw.on::after{left:23px}
-.chips{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
-.chip{padding:8px 16px;border-radius:20px;background:var(--surface);color:var(--muted);font-size:14px}
-.chip.sel{background:var(--primary);color:#fff}
-.test{margin-top:24px;background:var(--primary);color:#fff;font-weight:700}
-.note{margin-top:18px;color:var(--muted);font-size:12px;line-height:1.7}
-.popwrap{margin-top:26px;background:rgba(0,0,0,.45);border-radius:14px;padding:24px}
-.card{background:var(--surface);border-radius:14px;padding:20px}
-.addr{font-size:15px;line-height:1.5}
-.maps{display:flex;gap:8px;margin-top:16px}
-.mbtn{flex:1;padding:13px;border-radius:8px;font-size:15px;font-weight:700;color:#0A0E1A;text-align:center}
-.mbtn.t{background:var(--tmap)}.mbtn.k{background:var(--kakao)}
-.close{display:block;text-align:center;margin-top:10px;padding:10px;color:var(--muted);font-size:14px}
-@media(prefers-color-scheme:light){:root{--bg:#F4F6FB;--surface:#fff;--text:#0A0E1A;--muted:#5A6472}.btn.sub{background:#EEF1F7}.row{border-color:#E2E6EF}}
+.seg{display:flex;gap:8px;margin-top:12px}
+.seg .s{flex:1;text-align:center;padding:10px 0;border-radius:10px;
+ background:var(--surface2);color:var(--muted);font-size:14px;font-weight:600}
+.seg .s.sel{background:var(--primary);color:#fff}
+.maps2{display:flex;gap:10px;margin-top:12px}
+.mp{flex:1;text-align:center;padding:12px 0;border-radius:12px;
+ font-size:15px;font-weight:700}
+.mp.t{background:var(--tmap);color:#04331f}
+.mp.t.off{background:var(--surface2);color:var(--muted)}
+.mp.k{background:var(--kakao);color:#3a3000}
+.mp.k.off{background:var(--surface2);color:var(--muted)}
+
+.cap{margin:26px 4px 2px;color:var(--muted);font-size:12px;
+ letter-spacing:1px;text-transform:uppercase}
+.popwrap{margin-top:10px;background:rgba(0,0,0,.5);
+ border-radius:18px;padding:26px 18px}
+.pop{background:var(--surface);border-radius:16px;padding:20px;
+ box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.pop .pa{font-size:13px;color:var(--muted);margin-bottom:6px}
+.pop .ad{font-size:16px;line-height:1.5;font-weight:600}
+.pop .x{display:block;text-align:center;margin-top:12px;
+ color:var(--muted);font-size:13px;padding:8px}
+.note{margin:18px 4px 0;color:var(--muted);font-size:12px;line-height:1.7}
+@media(prefers-color-scheme:light){
+ :root{--bg:#EEF1F7;--surface:#fff;--surface2:#EDF0F6;--line:#E3E7F0;
+  --text:#0A0E1A;--muted:#6A7488}
+ .card{box-shadow:0 2px 10px rgba(20,30,60,.08)}
+}
 </style>
 </head>
 <body>
 <div class="banner">PREVIEW · 디자인 확인용 · 실제 동작 X</div>
 <div class="wrap">
 
-  <div class="cap">① 메인 화면 (MainActivity)</div>
-  <h1>주소→맵</h1>
-
-  <div class="status">
-    접근성(복사 자동감지): <span class="ok">✓ 켜짐</span><br>
-    오버레이 팝업 권한: <span class="no">✗ 꺼짐</span><br>
-    티맵 설치: <span class="ok">✓ 있음</span><br>
-    카카오맵 설치: <span class="ok">✓ 있음</span><br>
-    루트: <span class="ok">✓ 있음</span>
-  </div>
-
-  <a class="btn">접근성 설정 열기</a>
-  <a class="btn sub">루트로 접근성 자동 켜기</a>
-  <a class="btn">오버레이 권한 열기</a>
-  <a class="btn sub">루트로 오버레이 자동 허용</a>
-  <a class="btn">알림 권한 요청</a>
-
-  <div class="section">옵션</div>
-  <div class="row"><span>복사 감지 사용<br><small style="color:var(--muted)">끄면 팝업 안 뜸</small></span><span class="sw on"></span></div>
-  <div class="row"><span>주소만 반응<br><small style="color:var(--muted)">끄면 모든 복사에 반응</small></span><span class="sw on"></span></div>
-
-  <div style="margin-top:16px">팝업 자동 닫힘</div>
-  <div class="chips"><span class="chip">3초</span><span class="chip sel">6초</span><span class="chip">10초</span></div>
-
-  <div style="margin-top:20px">기본 맵 (팝업 왼쪽 우선)</div>
-  <div class="chips"><span class="chip sel">티맵</span><span class="chip">카카오</span></div>
-
-  <a class="btn test">샘플 주소로 팝업 테스트</a>
-
-  <div class="cap">② 주소 복사 시 뜨는 팝업</div>
-  <div class="popwrap">
-    <div class="card">
-      <div class="addr">서울특별시 강남구 테헤란로 123</div>
-      <div class="maps"><span class="mbtn t">티맵</span><span class="mbtn k">카카오</span></div>
-      <div class="close">닫기</div>
+  <div class="hdr">
+    <div class="logo">📍</div>
+    <div>
+      <h1>주소→맵</h1>
+      <p>주소 복사하면 티맵·카카오로 바로</p>
     </div>
   </div>
 
-  <div class="note">실제 앱: 주소 복사 → 자동 팝업 / 주소 드래그 → 메뉴 "주소→맵". 이 파일은 정적 목업(스위치·칩은 예시 상태).</div>
+  <div class="card">
+    <div class="t">상태</div>
+    <div class="srow"><span class="dot g"></span>접근성 (복사 자동감지)<span class="v">켜짐</span></div>
+    <div class="srow"><span class="dot r"></span>오버레이 팝업 권한<span class="v">꺼짐</span></div>
+    <div class="srow"><span class="dot g"></span>티맵 설치<span class="v">있음</span></div>
+    <div class="srow"><span class="dot g"></span>카카오맵 설치<span class="v">있음</span></div>
+    <div class="srow"><span class="dot g"></span>루트<span class="v">있음</span></div>
+  </div>
+
+  <div class="card">
+    <div class="t">권한</div>
+    <button class="btn"><span class="ic">♿</span>접근성 설정 열기</button>
+    <button class="btn root">루트로 접근성 자동 켜기</button>
+    <button class="btn"><span class="ic">🪟</span>오버레이 권한 열기</button>
+    <button class="btn root">루트로 오버레이 자동 허용</button>
+    <button class="btn"><span class="ic">🔔</span>알림 권한 요청</button>
+  </div>
+
+  <div class="card">
+    <div class="t">옵션</div>
+    <div class="orow">
+      <div><div class="lab">복사 감지 사용</div><div class="sub">끄면 팝업 안 뜸</div></div>
+      <span class="sw on"></span>
+    </div>
+    <div class="orow">
+      <div><div class="lab">주소만 반응</div><div class="sub">끄면 모든 복사에 반응</div></div>
+      <span class="sw on"></span>
+    </div>
+    <div style="margin-top:14px;font-size:14px;color:var(--muted)">팝업 자동 닫힘</div>
+    <div class="seg"><span class="s">3초</span><span class="s sel">6초</span><span class="s">10초</span></div>
+    <div style="margin-top:16px;font-size:14px;color:var(--muted)">기본 맵 (팝업 왼쪽 우선)</div>
+    <div class="maps2"><span class="mp t">티맵</span><span class="mp k off">카카오</span></div>
+  </div>
+
+  <button class="btn primary" style="margin-top:18px">샘플 주소로 팝업 테스트</button>
+
+  <div class="cap">주소 복사 시 뜨는 팝업</div>
+  <div class="popwrap">
+    <div class="pop">
+      <div class="pa">복사한 주소</div>
+      <div class="ad">서울특별시 강남구 테헤란로 123</div>
+      <div class="maps2" style="margin-top:16px">
+        <span class="mp t">티맵</span><span class="mp k">카카오</span>
+      </div>
+      <span class="x">닫기 (6초 후 자동)</span>
+    </div>
+  </div>
+
+  <div class="note">실제 안드로이드 화면과 동일 디자인(§116 Material3 카드).
+   정적 목업 — 스위치·칩·점은 예시 상태, 버튼 동작 X.</div>
 
 </div>
 </body>
