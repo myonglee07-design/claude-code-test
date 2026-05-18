@@ -6,6 +6,7 @@ import android.content.Context
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import com.myong.addr2map.core.AddressDetector
+import com.myong.addr2map.core.PrefsStore
 import com.myong.addr2map.ui.ChooserOverlay
 
 class AddrAccessibilityService : AccessibilityService() {
@@ -37,6 +38,7 @@ class AddrAccessibilityService : AccessibilityService() {
         getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
 
     private fun handleClip() {
+        if (!PrefsStore.isEnabled(this)) return
         val cm = clipboard() ?: return
         val clip = cm.primaryClip ?: return
         if (clip.itemCount == 0) return
@@ -48,8 +50,8 @@ class AddrAccessibilityService : AccessibilityService() {
         lastText = text
         lastAt = now
 
-        if (!AddressDetector.isLikelyAddress(text)) return
-        Log.d(TAG, "address detected")
+        if (PrefsStore.isAddrOnly(this) && !AddressDetector.isLikelyAddress(text)) return
+        Log.d(TAG, "clip handled")
         ChooserOverlay.show(applicationContext, text)
     }
 

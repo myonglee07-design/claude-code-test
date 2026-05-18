@@ -63,6 +63,69 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="옵션"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Switch
+            android:id="@+id/swEnabled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="복사 감지 사용 (끄면 팝업 안 뜸)"
+            android:textColor="#FFFFFF" />
+
+        <Switch
+            android:id="@+id/swAddrOnly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="주소만 반응 (끄면 모든 복사에 반응)"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="팝업 자동 닫힘"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" />
+
+        <RadioGroup
+            android:id="@+id/rgDismiss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbSec3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3초"
+                android:textColor="#FFFFFF" />
+
+            <RadioButton
+                android:id="@+id/rbSec6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="6초"
+                android:textColor="#FFFFFF" />
+
+            <RadioButton
+                android:id="@+id/rbSec10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="10초"
+                android:textColor="#FFFFFF" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="기본 맵 (팝업 왼쪽 우선)"
             android:textColor="#FFFFFF"

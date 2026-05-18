@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>주소→맵 · 미리보기</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="banner">PREVIEW · 디자인 확인용, 실제 동작 X</div>
+<div class="wrap">
+
+  <h1>주소→맵</h1>
+
+  <div class="status">
+    접근성(복사 자동감지): <span class="ok">✓ 켜짐</span><br>
+    오버레이 팝업 권한: <span class="no">✗ 꺼짐</span><br>
+    티맵 설치: <span class="ok">✓ 있음</span><br>
+    카카오맵 설치: <span class="ok">✓ 있음</span><br>
+    루트: <span class="ok">✓ 있음</span>
+  </div>
+
+  <a class="btn" href="#">접근성 설정 열기</a>
+  <a class="btn sub" href="#">루트로 접근성 자동 켜기</a>
+  <a class="btn" href="#">오버레이 권한 열기</a>
+  <a class="btn sub" href="#">루트로 오버레이 자동 허용</a>
+  <a class="btn" href="#">알림 권한 요청</a>
+
+  <div class="section">옵션</div>
+
+  <div class="row">
+    <span>복사 감지 사용<br><small style="color:var(--muted)">끄면 팝업 안 뜸</small></span>
+    <span class="sw on"></span>
+  </div>
+  <div class="row">
+    <span>주소만 반응<br><small style="color:var(--muted)">끄면 모든 복사에 반응</small></span>
+    <span class="sw on"></span>
+  </div>
+
+  <div style="margin-top:16px">팝업 자동 닫힘</div>
+  <div class="chips">
+    <span class="chip">3초</span>
+    <span class="chip sel">6초</span>
+    <span class="chip">10초</span>
+  </div>
+
+  <div style="margin-top:20px">기본 맵 (팝업 왼쪽 우선)</div>
+  <div class="chips">
+    <span class="chip sel">티맵</span>
+    <span class="chip">카카오</span>
+  </div>
+
+  <a class="btn test" href="popup.html">샘플 주소로 팝업 테스트</a>
+
+  <div class="note">
+    실제 앱: 주소 복사 시 자동 팝업 / 주소 드래그 → 메뉴 "주소→맵".<br>
+    이 페이지는 정적 목업입니다. 스위치·칩은 예시 상태.
+  </div>
+
+</div>
+</body>
+</html>

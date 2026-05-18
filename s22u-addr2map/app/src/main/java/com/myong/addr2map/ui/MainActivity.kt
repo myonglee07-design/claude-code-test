@@ -60,6 +60,21 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        b.swEnabled.setOnCheckedChangeListener { _, v ->
+            PrefsStore.setEnabled(this, v)
+        }
+        b.swAddrOnly.setOnCheckedChangeListener { _, v ->
+            PrefsStore.setAddrOnly(this, v)
+        }
+        b.rgDismiss.setOnCheckedChangeListener { _, id ->
+            val sec = when (id) {
+                b.rbSec3.id -> 3
+                b.rbSec10.id -> 10
+                else -> 6
+            }
+            PrefsStore.setAutoDismissSec(this, sec)
+        }
+
         b.rgDefault.setOnCheckedChangeListener { _, id ->
             val t = if (id == b.rbKakao.id) MapLauncher.Target.KAKAO
             else MapLauncher.Target.TMAP
@@ -74,6 +89,13 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         refreshStatus()
+        b.swEnabled.isChecked = PrefsStore.isEnabled(this)
+        b.swAddrOnly.isChecked = PrefsStore.isAddrOnly(this)
+        when (PrefsStore.autoDismissSec(this)) {
+            3 -> b.rbSec3.isChecked = true
+            10 -> b.rbSec10.isChecked = true
+            else -> b.rbSec6.isChecked = true
+        }
         when (PrefsStore.defaultTarget(this)) {
             MapLauncher.Target.TMAP -> b.rbTmap.isChecked = true
             MapLauncher.Target.KAKAO -> b.rbKakao.isChecked = true

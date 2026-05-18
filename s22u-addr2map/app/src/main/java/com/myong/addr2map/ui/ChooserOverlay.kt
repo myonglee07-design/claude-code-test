@@ -17,8 +17,6 @@ import com.myong.addr2map.core.MapLauncher
 
 object ChooserOverlay {
 
-    private const val AUTO_DISMISS_MS = 6000L
-
     private val main = Handler(Looper.getMainLooper())
     private var currentView: View? = null
     private var dismissRunnable: Runnable? = null
@@ -45,8 +43,10 @@ object ChooserOverlay {
             runCatching { wm.addView(view, lp) }
                 .onSuccess {
                     currentView = view
+                    val ms = com.myong.addr2map.core.PrefsStore
+                        .autoDismissSec(appCtx) * 1000L
                     dismissRunnable = Runnable { remove() }.also {
-                        main.postDelayed(it, AUTO_DISMISS_MS)
+                        main.postDelayed(it, ms)
                     }
                 }
                 .onFailure { NotificationHelper.showChooser(appCtx, address) }
