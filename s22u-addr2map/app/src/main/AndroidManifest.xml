@@ -29,9 +29,21 @@
             android:name=".ui.MapActionReceiver"
             android:exported="false" />
 
+        <activity
+            android:name=".ui.ProcessTextActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Addr2Map.Transparent">
+            <intent-filter>
+                <action android:name="android.intent.action.PROCESS_TEXT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+
         <!--
           남은 컴포넌트 (spec §10):
-          - ProcessTextActivity        : 7단계
           - AddrAccessibilityService   : 8단계
           - MainActivity (LAUNCHER)    : 9단계 (집)
         -->
