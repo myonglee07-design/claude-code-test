@@ -15,8 +15,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.myong.addr2map.core.MapLauncher
+import com.myong.addr2map.core.PrefsStore
 import com.myong.addr2map.databinding.FragmentMainBinding
-import com.myong.addr2map.service.AddrAccessibilityService
+import com.myong.addr2map.service.A11yAuto
 import com.myong.addr2map.service.SuRunner
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -76,6 +77,22 @@ class MainFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         refreshStatus()
+        maybeAutoEnableA11y()
+    }
+
+    private fun maybeAutoEnableA11y() {
+        if (!PrefsStore.isAutoA11y(requireContext())) return
+        if (A11yAuto.isAccessibilityEnabled(requireContext())) return
+        viewLifecycleOwner.lifecycleScope.launch {
+            val rootOK = withContext(Dispatchers.IO) { SuRunner.isRootAvailable() }
+            if (!rootOK) return@launch
+            val cmd = A11yAuto.buildEnableCmd(requireContext())
+            val r = withContext(Dispatchers.IO) { SuRunner.run(cmd) }
+            if (r.success) {
+                toast("접근성 자동 켜짐 (루트)")
+                refreshStatus()
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -94,7 +111,7 @@ class MainFragment : Fragment() {
 
     private fun statusText(rootLine: String): String {
         val ctx = requireContext()
-        val a11y = isAccessibilityEnabled()
+        val a11y = A11yAuto.isAccessibilityEnabled(ctx)
         val overlay = Settings.canDrawOverlays(ctx)
         val tmap = MapLauncher.isInstalled(ctx, MapLauncher.TMAP_PKG)
         val kakao = MapLauncher.isInstalled(ctx, MapLauncher.KAKAO_PKG)
@@ -118,27 +135,8 @@ class MainFragment : Fragment() {
 
     private fun ox(v: Boolean) = if (v) "✓ 켜짐/있음" else "✗ 꺼짐/없음"
 
-    private fun isAccessibilityEnabled(): Boolean {
-        val expected = ComponentName(requireContext(), AddrAccessibilityService::class.java)
-            .flattenToString()
-        val enabled = Settings.Secure.getString(
-            requireContext().contentResolver,
-            Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
-        ) ?: return false
-        return enabled.split(':').any { it.equals(expected, ignoreCase = true) }
-    }
-
     private fun rootEnableAccessibility() {
-        val comp = ComponentName(requireContext(), AddrAccessibilityService::class.java)
-            .flattenToString()
-        val cmd = "C=\"$comp\"; " +
-            "CUR=\$(settings get secure enabled_accessibility_services); " +
-            "if [ \"\$CUR\" = \"null\" ] || [ -z \"\$CUR\" ]; then NEW=\"\$C\"; " +
-            "elif echo \"\$CUR\" | grep -q \"\$C\"; then NEW=\"\$CUR\"; " +
-            "else NEW=\"\$CUR:\$C\"; fi; " +
-            "settings put secure enabled_accessibility_services \"\$NEW\"; " +
-            "settings put secure accessibility_enabled 1"
-        runRoot(cmd, "접근성 자동 켜기")
+        runRoot(A11yAuto.buildEnableCmd(requireContext()), "접근성 자동 켜기")
     }
 
     private fun rootGrantOverlay() {

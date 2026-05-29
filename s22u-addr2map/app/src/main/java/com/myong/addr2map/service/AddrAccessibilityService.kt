@@ -6,8 +6,10 @@ import android.content.Context
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import com.myong.addr2map.core.AddressDetector
+import com.myong.addr2map.core.KakaoExtractor
 import com.myong.addr2map.core.PrefsStore
 import com.myong.addr2map.ui.ChooserOverlay
+import com.myong.addr2map.ui.NotificationHelper
 
 class AddrAccessibilityService : AccessibilityService() {
 
@@ -30,7 +32,18 @@ class AddrAccessibilityService : AccessibilityService() {
         return super.onUnbind(intent)
     }
 
-    override fun onAccessibilityEvent(event: AccessibilityEvent?) {}
+    override fun onAccessibilityEvent(event: AccessibilityEvent?) {
+        event ?: return
+        if (!PrefsStore.isKakaoOn(this)) return
+        val pkg = event.packageName?.toString() ?: return
+        if (pkg != KakaoExtractor.PKG) return
+        val type = event.eventType
+        if (type != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED &&
+            type != AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) return
+        val root = runCatching { rootInActiveWindow }.getOrNull() ?: return
+        val dest = KakaoExtractor.handle(this, root) ?: return
+        NotificationHelper.showChooser(applicationContext, dest)
+    }
 
     override fun onInterrupt() {}
 

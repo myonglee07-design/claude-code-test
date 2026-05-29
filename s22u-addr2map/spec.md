@@ -166,8 +166,32 @@ D(방식/팝업/판별/기본맵) 확정 완료. Q1~Q5만 답 주시면 반영.
 ## 12. 차기 작업 메모 (집에서)
 
 - 앱 내 "주소 직접 입력"(붙여넣기→티맵/카카오) 추가 완료.
-- 카카오대리 콜화면 도착지 추출 → **헤드업 알림(옵션1) 확정**:
-  자동 팝업 X, 알림 띠 뜨면 사용자가 [티맵]/[카카오] 탭해야 동작.
-  도착지 글자·카카오대리 패키지명은 실기기 정찰 필요(집).
-- ⚠️ **띠 위치**: 화면 맨 아래엔 이미 **슈퍼멀티(SMulti) 띠**가 있음
-  → 우리 띠는 그보다 **살짝 위**로. 정확한 위치값은 집에서 조정.
+- 카카오대리 콜화면 도착지 추출 → **헤드업 알림(옵션1)** 스캐폴드 완료.
+  자동 팝업 X, 헤드업 알림 띠 뜨면 사용자가 [티맵]/[카카오] 탭.
+- 띠 위치: 옵션1(헤드업 알림) = 화면 상단이라 슈퍼멀티 띠와 충돌 없음(과거 메모 폐기).
+
+## 13. 카카오대리 스캐폴드 (밖에서 완료, v0.1.0)
+
+지침 §149/§150 박제 패턴 적용:
+
+- `core/KakaoExtractor.kt`
+  - `PKG = "com.kakao.driver"` (집 정찰로 실제값 교체 — TODO)
+  - `dumpNode` 안전 패턴 (§149.2 MAX_DEPTH 20 / MAX_COUNT 100)
+  - `handle()` 진입 가드 (§149.9: debounce 1.5s / doneLock 8s)
+  - `findDestination(root)` = **TODO (집 클로드 코드가 정찰결과 박음)**
+- `service/AddrAccessibilityService.kt` `onAccessibilityEvent`
+  - `PrefsStore.isKakaoOn` 체크 → packageName == PKG 만 처리 (§149.6)
+  - TYPE_WINDOW_STATE_CHANGED / TYPE_WINDOW_CONTENT_CHANGED
+  - 도착지 잡히면 `NotificationHelper.showChooser` (헤드업 IMPORTANCE_HIGH, 무음)
+- `res/xml/accessibility_service_config.xml`
+  - canRetrieveWindowContent=true, flagRetrieveInteractiveWindows|flagReportViewIds
+- `service/A11yAuto.kt` + `service/BootReceiver.kt` (§85/§115 보강)
+  - 부팅 30s 후 + onResume시 자동 접근성 ON (루트, PrefsStore.isAutoA11y)
+- 옵션 탭 새 카드 "카카오대리": 자동감지 / 정찰모드 / 부팅 자동 ON
+
+### 집 작업 (Claude Code, 실기기 + 콜 1번)
+1. 카카오대리 켜고 `dumpsys window | grep mCurrentFocus` → `PKG` 실제값 확정 → `KakaoExtractor.PKG` 교체
+2. 옵션탭 "정찰 모드" ON
+3. 콜 1번 잡아 도착지 화면에서 `adb logcat -s KakaoRecon:V` 로 노드 확인
+4. 도착지 노드 식별(viewId/text 라벨) → `KakaoExtractor.findDestination()` 채움
+5. 정찰 모드 OFF + 실콜 검증

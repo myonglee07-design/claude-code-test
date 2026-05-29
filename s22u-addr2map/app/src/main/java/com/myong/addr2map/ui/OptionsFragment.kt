@@ -26,6 +26,9 @@ class OptionsFragment : Fragment() {
 
         b.swEnabled.isChecked = PrefsStore.isEnabled(ctx)
         b.swAddrOnly.isChecked = PrefsStore.isAddrOnly(ctx)
+        b.swKakao.isChecked = PrefsStore.isKakaoOn(ctx)
+        b.swRecon.isChecked = PrefsStore.isRecon(ctx)
+        b.swAutoA11y.isChecked = PrefsStore.isAutoA11y(ctx)
         when (PrefsStore.autoDismissSec(ctx)) {
             3 -> b.rbSec3.isChecked = true
             10 -> b.rbSec10.isChecked = true
@@ -38,6 +41,9 @@ class OptionsFragment : Fragment() {
 
         b.swEnabled.setOnCheckedChangeListener { _, v -> PrefsStore.setEnabled(ctx, v) }
         b.swAddrOnly.setOnCheckedChangeListener { _, v -> PrefsStore.setAddrOnly(ctx, v) }
+        b.swKakao.setOnCheckedChangeListener { _, v -> PrefsStore.setKakaoOn(ctx, v) }
+        b.swRecon.setOnCheckedChangeListener { _, v -> PrefsStore.setRecon(ctx, v) }
+        b.swAutoA11y.setOnCheckedChangeListener { _, v -> PrefsStore.setAutoA11y(ctx, v) }
         b.rgDismiss.setOnCheckedChangeListener { _, id ->
             val sec = when (id) {
                 b.rbSec3.id -> 3

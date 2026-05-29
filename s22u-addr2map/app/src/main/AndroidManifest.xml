@@ -4,10 +4,11 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-    <!-- Android 11+ 패키지 가시성: 티맵 / 카카오맵 -->
+    <!-- Android 11+ 패키지 가시성: 티맵 / 카카오맵 / 카카오대리(정찰 대상) -->
     <queries>
         <package android:name="com.skt.tmap.ku" />
         <package android:name="net.daum.android.map" />
+        <package android:name="com.kakao.driver" />
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="tmap" />
@@ -41,6 +42,19 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".service.BootReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter android:priority="999">
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
 
         <service
             android:name=".service.AddrAccessibilityService"
